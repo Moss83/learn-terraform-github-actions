@@ -27,6 +27,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
+/*
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -146,3 +147,4 @@ output "web-address-1" {
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
 }
+*/
