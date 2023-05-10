@@ -27,7 +27,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
-/*
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -63,24 +63,7 @@ resource "aws_instance" "develop" {
               EOF
 }
 
-resource "aws_instance" "qa" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.qa-sg.id]
 
-  tags = {
-    Name = "Maquina QA"
-  }
-
-  user_data = <<-EOF
-              #!/bin/bash
-              apt-get update
-              apt-get install -y apache2
-              sed -i -e 's/80/8080/' /etc/apache2/ports.conf
-              echo "Hello World" > /var/www/html/index.html
-              systemctl restart apache2
-              EOF
-}
 
 resource "aws_db_instance" "develop" {
   allocated_storage    = 10
@@ -90,18 +73,6 @@ resource "aws_db_instance" "develop" {
   instance_class       = "db.t3.micro"
   username             = "user_admin"
   password             = "iloveaws123"
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
-}
-
-resource "aws_db_instance" "qa" {
-  allocated_storage    = 10
-  db_name              = "qa"
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t3.micro"
-  username             = "user_admin"
-  password             = "iloveaws678"
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
 }
@@ -123,6 +94,45 @@ resource "aws_security_group" "develop-sg" {
   }
 }
 
+output "web-address-1" {
+  value = "${aws_instance.develop.public_dns}:8080"
+}
+
+/*
+
+resource "aws_instance" "qa" {
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.qa-sg.id]
+
+  tags = {
+    Name = "Maquina QA"
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              apt-get update
+              apt-get install -y apache2
+              sed -i -e 's/80/8080/' /etc/apache2/ports.conf
+              echo "Hello World" > /var/www/html/index.html
+              systemctl restart apache2
+              EOF
+}
+
+resource "aws_db_instance" "qa" {
+  allocated_storage    = 10
+  db_name              = "qa"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t3.micro"
+  username             = "user_admin"
+  password             = "iloveaws678"
+  parameter_group_name = "default.mysql5.7"
+  skip_final_snapshot  = true
+}
+
+
+
 resource "aws_security_group" "qa-sg" {
   name = "qa-sg"
   ingress {
@@ -140,9 +150,7 @@ resource "aws_security_group" "qa-sg" {
   }
 }
 
-output "web-address-1" {
-  value = "${aws_instance.develop.public_dns}:8080"
-}
+
 
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
