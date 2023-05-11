@@ -98,7 +98,6 @@ output "web-address-1" {
   value = "${aws_instance.develop.public_dns}:8080"
 }
 
-/*
 
 resource "aws_instance" "qa" {
   ami                    = data.aws_ami.ubuntu.id
@@ -155,4 +154,3 @@ resource "aws_security_group" "qa-sg" {
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
 }
-*/
