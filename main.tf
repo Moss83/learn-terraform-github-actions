@@ -27,6 +27,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
+# DEVELOP
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -63,8 +64,6 @@ resource "aws_instance" "develop" {
               EOF
 }
 
-
-
 resource "aws_db_instance" "develop" {
   allocated_storage    = 10
   db_name              = "develop"
@@ -98,7 +97,8 @@ output "web-address-1" {
   value = "${aws_instance.develop.public_dns}:8080"
 }
 
-
+# QA
+/*
 resource "aws_instance" "qa" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
@@ -130,8 +130,6 @@ resource "aws_db_instance" "qa" {
   skip_final_snapshot  = true
 }
 
-
-
 resource "aws_security_group" "qa-sg" {
   name = "qa-sg"
   ingress {
@@ -149,8 +147,7 @@ resource "aws_security_group" "qa-sg" {
   }
 }
 
-
-
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
 }
+*/
