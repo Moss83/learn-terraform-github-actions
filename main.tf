@@ -98,7 +98,7 @@ output "web-address-1" {
 }
 
 # QA
-/*
+
 resource "aws_instance" "qa" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
@@ -150,4 +150,3 @@ resource "aws_security_group" "qa-sg" {
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
 }
-*/
