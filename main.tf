@@ -28,7 +28,7 @@ provider "aws" {
 }
 
 # DEVELOP
-
+/*
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -150,3 +150,4 @@ resource "aws_security_group" "qa-sg" {
 output "web-address-2" {
   value = "${aws_instance.qa.public_dns}:8080"
 }
+*/
